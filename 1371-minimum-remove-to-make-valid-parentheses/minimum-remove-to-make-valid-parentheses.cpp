@@ -11,21 +11,9 @@ public:
     int left = 0;
     int right = 0;
     vector<bool> isRemove(s.length(),0);
-    for (int i = 0; i<s.length(); i++)
-    {
-        if (s[i] == '(') left++;
-        else if (s[i] == ')') right++;
-        else continue;
-        if (left < right)
-        {
-            isRemove[i] = true;
-            left = 0;
-            right = 0;
-        }
-    }
+    
 
-    left = 0;
-    right = 0;
+
     for (int i = s.length()-1; i>=0; i--)
     {
         if (s[i] == '(') left++;
@@ -40,13 +28,31 @@ public:
     }
 
     string result;
-    for (int i = 0; i< s.length(); i++)
+    left = 0;
+    right = 0;
+
+    for (int i = 0; i<s.length(); i++)
     {
+        if (s[i] == '(') left++;
+        else if (s[i] == ')') right++;
+        else
+        {
+            result+=s[i];
+            continue;
+        }
+
+        if (left < right)
+        {
+            isRemove[i] = true;
+            left = 0;
+            right = 0;
+        }
         if (!isRemove[i])
         {
             result+=s[i];
         }
     }
+
     return result;
 }
 };
