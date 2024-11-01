@@ -1,7 +1,7 @@
 class Solution {
 public:
 
-    vector<vector<int>> intervalIntersection(vector<vector<int>>& firstList, vector<vector<int>>& secondList) {
+    vector<vector<int>> intervalIntersection2(vector<vector<int>>& firstList, vector<vector<int>>& secondList) {
         vector<vector<int>> result;
         int i = 0;
         int j = 0;
@@ -31,26 +31,20 @@ public:
     
     
     
-    
-    
-    
-    vector<vector<int>> intervalIntersection2(vector<vector<int>>& firstList, vector<vector<int>>& secondList) {
-        vector<vector<int>> result;
+    vector<vector<int>> intervalIntersection(vector<vector<int>>& firstList, vector<vector<int>>& secondList) {
         int i = 0;
-        int j = 0;    
-        // no overlap when one list is finish
+        int j = 0;
+        vector<vector<int>> result;
         while ((i<firstList.size()) && (j<secondList.size()))
         {
-            int lo = max(firstList[i][0],secondList[j][0]);
-            int hi = min(firstList[i][1],secondList[j][1]);
-
-            if (lo<=hi)
+            int left = max(firstList[i][0],secondList[j][0]);
+            int right = min(firstList[i][1],secondList[j][1]);
+            if (left<=right)
             {
-                result.push_back({lo,hi});
+                result.push_back({left,right});
             }
 
-            // move to the next interval
-            if (firstList[i][1] < secondList[j][1])
+            if (firstList[i][1]<secondList[j][1])
             {
                 i++;
             }
@@ -58,7 +52,6 @@ public:
             {
                 j++;
             }
-            
         }
         return result;
     }
