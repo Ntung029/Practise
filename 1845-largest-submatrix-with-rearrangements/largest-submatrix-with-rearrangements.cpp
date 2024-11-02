@@ -11,7 +11,33 @@ public:
             1 1 2
             2 0 3
         */
-        return 0;
+
+        int N = matrix.size();
+        int M = matrix[0].size();
+        int result = 0;
+        auto prev = matrix[0];
+        vector<int> currRow(M,0);
+
+        for (int i = 1; i<N; i++)
+        {
+            for (int j = 0; j<M; j++)
+            {
+                if (matrix[i][j]!=0)
+                {
+                    currRow[j] = prev[j]+matrix[i][j];
+                }
+            }
+
+            auto row = currRow;
+            sort(row.begin(),row.end(),greater());
+            for (int j=0; j<M; j++)
+            {
+                result = max(result,row[j]*(j+1));
+            }
+            prev = currRow;
+        }
+
+        return result;
 
     }
 
