@@ -20,7 +20,7 @@ public:
 */
 class Solution{
 public:
-    Node* cloneGraph(Node* node)
+    Node* cloneGraphBFS(Node* node)
     {
         // using BFS
         // DFS
@@ -50,6 +50,26 @@ public:
                 }
                 mp[curr]->neighbors.push_back(mp[neighbor]);
             }
+        }
+        return cloneNode;
+    }
+
+    // using DFS
+    unordered_map<Node*,Node*> clone;
+    Node* cloneGraph(Node* node)
+    {
+        if (!node) return nullptr;
+        if (clone.end() != clone.find(node))
+        {
+            return clone[node];
+        }
+
+        auto cloneNode = new Node(node->val);
+        clone[node] = cloneNode;
+        for (auto neighbor:node->neighbors)
+        {
+            auto cloneNeighbor = cloneGraph(neighbor);
+            cloneNode->neighbors.push_back(cloneNeighbor);
         }
         return cloneNode;
     }
