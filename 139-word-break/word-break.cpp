@@ -1,4 +1,4 @@
-class Solution {
+class Solution3 {
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
         int N = s.length();
@@ -65,5 +65,67 @@ public:
             }
         }
         return false;
+    }
+};
+
+// using Trie
+constexpr int N = 27;
+struct TrieNode{
+    bool isEndWord;
+    TrieNode* children[N];
+    TrieNode(){
+        isEndWord = false;
+        for (int i = 0; i<N; i++)
+        {
+            children[i] = nullptr;
+        }
+    }
+};
+
+class Solution{
+public:
+    void insert(TrieNode* root, const string& word)
+    {
+        auto curr = root;
+        for (auto ch:word)
+        {
+            if (nullptr == curr->children[ch-'a'])
+            {
+                curr->children[ch-'a'] = new TrieNode();
+            }
+            curr = curr->children[ch-'a'];
+        }
+        curr->isEndWord = true;
+    }
+
+
+    bool wordBreak(string s, vector<string>& wordDict) {
+        // construct the trie
+        
+        auto root = new TrieNode();
+        for (const auto& word:wordDict)
+        {
+            insert(root,word);
+        }
+
+        vector<bool> dp(s.size(),false);
+        for (int i = 0; i<s.size(); i++)
+        {
+            if ((i == 0) || (dp[i-1]))
+            {
+                auto curr = root;
+                for (int j = i; j<s.length(); j++)
+                {
+                    if (nullptr == curr->children[s[j]-'a'])
+                    {
+                        break;
+                    }
+
+                    curr = curr->children[s[j]-'a'];
+                    if (curr->isEndWord) dp[j] = true;
+                }
+            }
+        }
+        return dp[s.length()-1];
     }
 };
