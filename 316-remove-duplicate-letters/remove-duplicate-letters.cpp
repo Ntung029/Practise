@@ -22,7 +22,7 @@ public:
 		        // the current character and last position is after
                 // the current character
                 
-                while (!st.empty() && (s[i] < st.top()) && (lastPos[st.top()] >i))
+                while (!st.empty() && (s[i] <= st.top()) && (lastPos[st.top()] >i))
                 {
                     isUsed.erase(st.top());
                     st.pop();
