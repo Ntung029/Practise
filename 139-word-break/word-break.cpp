@@ -1,6 +1,35 @@
-class Solution3 {
+class Solution4 {
 public:
-    bool wordBreak(string s, vector<string>& wordDict) {
+
+    bool wordBreak(string s, vector<string>& wordDict)
+    {
+        unordered_set<string> st;
+        for (const auto& word:wordDict)
+        {
+            st.insert(word);
+        }
+        int N = s.length();
+        vector<bool> isValid(N+1,false);
+
+        isValid[0] = true;
+        for (int i = 1; i<=N; i++)
+        {
+            for (int j = 0; j<i; j++)
+            {
+                if ((isValid[j]) && (st.end() != st.find(s.substr(j,i-j))))
+                {
+                    isValid[i] = true;
+                }
+                if (i == N)
+                {
+                    return true;
+                }
+            }
+        }
+        return isValid[N];
+    }    
+
+    bool wordBreak2(string s, vector<string>& wordDict) {
         int N = s.length();
         vector<bool> isValid(N,false);
         isValid[0] = true;
@@ -82,7 +111,7 @@ struct TrieNode{
     }
 };
 
-class Solution{
+class Solution3{
 public:
     void insert(TrieNode* root, const string& word)
     {
@@ -127,5 +156,82 @@ public:
             }
         }
         return dp[s.length()-1];
+    }
+};
+
+class Solution {
+public:
+   // using Trie
+   struct TrieNode {
+        TrieNode* children[27];
+        bool isEndWord;
+
+        TrieNode()
+        {
+            isEndWord = false;
+            for (int i = 0; i<27; i++)
+            {
+                children[i] = nullptr;
+            }
+        }
+   };     
+
+   void insert(TrieNode* root, const string& word)
+   {
+        auto curr = root;
+        for (const auto ch:word)
+        {
+            if (!curr->children[ch-'a'])
+            {
+                curr->children[ch-'a'] = new TrieNode();
+            }
+            curr = curr->children[ch-'a'];
+        }
+        curr->isEndWord = true;
+   }
+
+   bool query(TrieNode* root, const string& word)
+   {
+        auto curr = root;
+        for (const auto ch:word)
+        {
+            if (!curr->children[ch-'a'])
+            {
+                return false;
+            }
+            curr = curr->children[ch-'a'];
+        }
+        return curr->isEndWord;
+   }
+
+    bool wordBreak(string s, vector<string>& wordDict)
+    {
+        // construct trie
+        auto root = new TrieNode();
+        for (const auto& word:wordDict)
+        {
+            insert(root,word);
+        }
+
+        int N = s.length();
+        vector<bool> dp(N,false);
+        //
+        for (int i = 0; i<N; i++)
+        {
+            if ((i==0) || (dp[i-1]))
+            {
+                auto curr = root;
+                for (int j = i; j<N; j++)
+                {
+                    if (!curr->children[s[j]-'a'])
+                    {
+                        break;
+                    }
+                    curr = curr->children[s[j]-'a'];
+                    dp[j] = dp[j] | curr->isEndWord;
+                }
+            }
+        }
+        return dp[N-1];
     }
 };
