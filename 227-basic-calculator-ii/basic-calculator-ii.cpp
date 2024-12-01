@@ -21,7 +21,7 @@ public:
                 num = num*10+(ch-'0');
             }
 
-            if ((ch == '+') || (ch == '-') || (ch == '*') || (ch == '/') || (ch == ' ') || (i == s.length()-1))
+            if ((ch == '+') || (ch == '-') || (ch == '*') || (ch == '/') || (i == s.length()-1))
             {
                 cout << i << endl;
                 if (prevSign == '+')
@@ -52,10 +52,7 @@ public:
                     st.pop();
                     st.push(val);
                 }
-                if (ch != ' ')
-                {
-                    prevSign = ch;
-                }
+                prevSign = ch;
                 num = 0;
             }
             else if (!isDigit(ch))
