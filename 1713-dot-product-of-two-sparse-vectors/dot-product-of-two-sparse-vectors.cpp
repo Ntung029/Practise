@@ -2,30 +2,36 @@ class SparseVector {
 public:
     
     SparseVector(vector<int> &nums) {
-        arr = nums;
+        for (int i = 0; i<nums.size(); i++)
+        {
+            if (nums[i] != 0)
+            {
+                mp[i] = nums[i];
+            }
+        }
     }
 
-    vector<int> getArr()
+    unordered_map<int,int> getMap()
     {
-        return arr;
+        return mp;
     }
     
     // Return the dotProduct of two sparse vectors
     int dotProduct(SparseVector& vec) {
-        auto vecArr = vec.getArr();
-        if (arr.size() != vecArr.size())
-        {
-            return INT32_MIN;
-        }
+        auto vecMp = vec.getMap();
+        
         int sum = 0;
-        for (int i = 0; i<vecArr.size(); i++)
+        for (auto it:mp)
         {
-            sum += arr[i]*vecArr[i];
+            if (vecMp.end() != vecMp.find(it.first))
+            {
+                sum += it.second*vecMp[it.first];
+            }
         }
         return sum;
     }
 private:
-    vector<int> arr;
+    unordered_map<int,int> mp;
 };
 
 // Your SparseVector object will be instantiated and called as such:
