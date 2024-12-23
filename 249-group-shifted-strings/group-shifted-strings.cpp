@@ -1,9 +1,8 @@
-class Solution2 {
+class Solution {
 public:
-    int decode(const string& s)
+    string decode(const string& s)
     {
-        if (s.length()<2) return INT32_MIN;
-        int result = 0;
+        string result;
         for (int i = 1; i<s.length(); i++)
         {
             result += (s[i] - s[i - 1] + 26) % 26 + 'a';
@@ -11,10 +10,10 @@ public:
         return result;
     }
     vector<vector<string>> groupStrings(vector<string>& strings) {
-        unordered_map<int,vector<string>> mp;
+        unordered_map<string,vector<string>> mp;
         for (const auto& s:strings)
         {
-            int i = decode(s);
+            auto i = decode(s);
             mp[i].push_back(s);
         }
         vector<vector<string>> result;
@@ -26,7 +25,7 @@ public:
     }
 };
 
-class Solution {
+class Solution2 {
 public:
     // Create a hash value
     string getHash(string &s) {
