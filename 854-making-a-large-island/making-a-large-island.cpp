@@ -63,6 +63,7 @@ public:
 private:
     vector<int> par;
     vector<int> rank;
+    // keep track the size of the island
     vector<int> count;
     int N;
 };
@@ -99,7 +100,7 @@ public:
             }
         }
 
-        
+        // get the size of the largest island
         int result = unionJoin.getMaxIsland();
         
         
@@ -111,7 +112,9 @@ public:
                 {
                    // cout << "ij:" << i << " " << j << endl;
                     int sumCount = 0;
-                     unordered_set<int> group;
+
+                    // keep track the set of connected islands when fliping cell i,j
+                    unordered_set<int> group;
                     for (int k=0; k<4; k++)
                     {
                         int u = i+dx[k];
@@ -126,6 +129,7 @@ public:
                             }
                         }
                     }
+                    
                     result = max(result,sumCount+1);
                 }
             }
