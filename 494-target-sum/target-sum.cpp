@@ -1,23 +1,38 @@
 class Solution {
 public:
-    void DFS(vector<int>& nums, int i, int target, int sum, int& result)
+    int total;
+    int DFS(vector<int>& nums, int i, int target, int sum, vector<vector<int>>& memo)
     {
         if (i == nums.size())
         { 
             if (target == sum)
             {
-                result++;
+                return 1;
             }
-            return;
+            return 0;
         }
-
-        DFS(nums,i+1,target,sum+nums[i],result);
-        DFS(nums,i+1,target,sum-nums[i],result);
+      
+        if (memo[i][total+sum] != INT32_MIN)
+        {
+            return memo[i][total+sum];
+        }
+        else
+        {
+            int add = DFS(nums,i+1,target,sum+nums[i],memo);
+            int substract = DFS(nums,i+1,target,sum-nums[i],memo);
+            memo[i][sum+total] = add+substract;
+        }
+        return memo[i][sum+total];
     }
     
     int findTargetSumWays(vector<int>& nums, int target) {
-        int result = 0;
-        DFS(nums,0,target,0,result);
-        return result;
+        total = 0;
+        for (auto num:nums)
+        {
+            total+=num;
+        }
+        
+        vector<vector<int>> memo(nums.size(),vector<int>(2*total+1,INT32_MIN));
+        return DFS(nums,0,target,0,memo);
     }
 };
